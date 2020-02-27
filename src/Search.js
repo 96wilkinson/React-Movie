@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Suggestions from "./Suggestions";
-import MoreInformation from "./DetailedInformation";
+
+
+import { createBrowserHistory } from "history";
+
+const customHistory = createBrowserHistory();
 
 const API_KEY = "c2e9fda";
 const API_URL = "http://www.omdbapi.com/?apikey=" + API_KEY + "&s=";
@@ -56,15 +60,20 @@ export default class DoAll extends Component {
       () => {
         if (this.state.IMDBquery && this.state.IMDBquery.length > 1) {
           if (this.state.IMDBquery.length % 2 === 0) {
-            this.getMoreInfo();
+            this.historyPush();
           }
-          this.getMoreInfo();
+          this.historyPush();
         } else if (!this.state.IMDBquery) {
-          this.getMoreInfo();
+          this.historyPush();
         }
       }
     );
   };
+
+  historyPush = event => {
+    customHistory.push('/details/id' + this.state.IMDBquery + "&plot=full");
+    window.location.reload();
+  }
 
   getMoreInfo = event => {
     axios
@@ -86,6 +95,7 @@ export default class DoAll extends Component {
             id="SearchBar"
             placeholder="Search for..."
             ref={input => (this.search = input)}
+            onSubmit={this.handleInputChange}
           />
           <input
             type="button"
@@ -102,13 +112,7 @@ export default class DoAll extends Component {
         </article>
         </div>
         <br/>
-        <div>
-        <article className="flex-container-further">
-          {Array.isArray(this.state.IMDBresults) && this.state.IMDBresults.map(info => (
-            <MoreInformation {...info} />
-          ))}
-        </article>
-        </div>
+
       </main>
     );
   }

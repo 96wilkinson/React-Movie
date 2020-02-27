@@ -45,22 +45,29 @@ h3 {
   color: aliceblue;
 }
 
-
-#searchForm{
+#searchForm {
   margin-left: -50%;
 }
 
-.pic{
+.pic {
   display: inline;
   border-radius: 10px;
 }
 
-/* Create two equal columns that floats next to each other */
 .column {
+
   float: left;
-  width: 50%;
-  height: 500px; /* Should be removed. Only for demonstration */
-  margin-bottom: 5px;
+  padding: 10px;
+}
+
+.left {
+  width: 25%;
+  align-content: center;
+}
+
+.right {
+  width: 75%;
+  align-content: center;
 }
 
 /* Clear floats after the columns */
@@ -69,7 +76,6 @@ h3 {
   display: table;
   clear: both;
 }
-
-
-
-
+* {
+  box-sizing: border-box;
+}
