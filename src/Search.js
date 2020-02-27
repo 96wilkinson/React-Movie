@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Suggestions from "./Suggestions";
+import MoreInformation from "./DetailedInformation";
 
 const API_KEY = "c2e9fda";
 const API_URL = "http://www.omdbapi.com/?apikey=" + API_KEY + "&s=";
-const API_URL_MORE = "http://www.omdbapi.com/?apikey=" + API_KEY + "&t=";
+const API_URL_MORE = "http://www.omdbapi.com/?apikey=" + API_KEY + "&i=";
 
 export default class DoAll extends Component {
   constructor(props) {
@@ -12,8 +13,8 @@ export default class DoAll extends Component {
     this.state = {
       query: " ",
       results: [],
-      IMBDquery: " ",
-      IMBDresults: []
+      IMDBquery: " ",
+      IMDBresults: []
     };
   }
 
@@ -24,6 +25,7 @@ export default class DoAll extends Component {
         this.setState({
           results: data.Search
         });
+        console.log(data);
       })
       .catch(err => console.log(err));
   };
@@ -34,32 +36,31 @@ export default class DoAll extends Component {
         query: this.search.value
       },
       () => {
-          
         if (this.state.query && this.state.query.length > 1) {
           if (this.state.query.length % 2 === 0) {
             this.getInfo();
           }
           this.getInfo();
         } else if (!this.state.query) {
-            this.getInfo();
+          this.getInfo();
         }
       }
     );
   };
 
-  findIMBD = () => {
+  findIMDB = event => {
     this.setState(
       {
-        IMBDquery: this.target.id
+        IMDBquery: event.target.id
       },
       () => {
-        if (this.state.IMBDquery && this.state.IMBDquery.length > 1) {
-          if (this.state.IMBDquery.length % 2 === 0) {
+        if (this.state.IMDBquery && this.state.IMDBquery.length > 1) {
+          if (this.state.IMDBquery.length % 2 === 0) {
             this.getMoreInfo();
           }
           this.getMoreInfo();
-        } else if (!this.state.IMBDquery) {
-            this.getMoreInfo();
+        } else if (!this.state.IMDBquery) {
+          this.getMoreInfo();
         }
       }
     );
@@ -67,21 +68,20 @@ export default class DoAll extends Component {
 
   getMoreInfo = event => {
     axios
-      .get(`${API_URL_MORE}` + this.state.IMBDquery)
+      .get(`${API_URL_MORE}` + this.state.IMDBquery)
       .then(({ data }) => {
         this.setState({
-          IMBDresults: this.target.id
+          IMDBresults: [data]
         });
-        console.log(this.state.IMBDresults)
+        console.log(this.state.IMDBresults);
       })
       .catch(err => console.log(err));
   };
 
-
   render() {
     return (
-      <div>
-        <form id="searchForm" onsubmit={this.handleInputChange}>
+      <main>
+        <form id="searchForm">
           <input
             id="SearchBar"
             placeholder="Search for..."
@@ -95,12 +95,22 @@ export default class DoAll extends Component {
           />
         </form>
         <br></br>
-        <div class="flex-container">
-        {this.state.results.map(film => (
-          <Suggestions {...film} />
-        ))}
+        <div>
+        <article className="flex-container" onClick={this.findIMDB}>
+          {Array.isArray(this.state.results) &&
+            this.state.results.map(film => <Suggestions {...film} />)}
+        </article>
         </div>
-      </div>
+        <br/>
+        <div>
+        <article className="flex-container-further">
+          {Array.isArray(this.state.IMDBresults) && this.state.IMDBresults.map(info => (
+            <MoreInformation {...info} />
+          ))}
+        </article>
+        </div>
+      </main>
     );
   }
 }
+// 

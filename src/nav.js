@@ -15,7 +15,7 @@ export default class Nav extends React.Component {
           </ul>
         </nav>
 
-        <h2>Welcome To the danger zone</h2>
+        <h2 id="searchForm">Welcome To the danger zone</h2>
       </div>
     );
   }

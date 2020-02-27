@@ -41,6 +41,34 @@ p {
   color: #282c34;
 }
 
+h3 {
+  color: aliceblue;
+}
+
+
+#searchForm{
+  margin-left: -50%;
+}
+
+.pic{
+  display: inline;
+  border-radius: 10px;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  height: 500px; /* Should be removed. Only for demonstration */
+  margin-bottom: 5px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 
 
